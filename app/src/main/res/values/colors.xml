@@ -11,4 +11,6 @@
     <color name="blue_200">#5dabc7</color>
     <color name="blue_500">#418ba6</color>
     <color name="blue_700">#345966</color>
+
+    <color name="ic_launcher_hs_background">#FFFFFFFF</color>
 </resources>
