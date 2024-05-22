@@ -1,3 +1,7 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+.idea
+.idea/deploymentTargetDropDown.xml
+.idea/gradle.xml
+.idea/misc.xml
