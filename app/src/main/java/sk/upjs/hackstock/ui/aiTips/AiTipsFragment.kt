@@ -7,7 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import sk.upjs.hackstock.MainApplication
 import sk.upjs.hackstock.databinding.FragmentAiTipsBinding
+import sk.upjs.hackstock.ui.home.HomeViewModel
 
 class AiTipsFragment : Fragment() {
 
@@ -22,8 +24,13 @@ class AiTipsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //THIS ADDED TO COMMUNICATE WITH DB
+        val application = requireNotNull(this.activity).application
+        val usersRepository = (application as MainApplication).repository
+        val factory = AiTipsViewModel.AiTipsViewModelFactory(usersRepository)
+        //TO HERE
         val aiTipsViewModel =
-            ViewModelProvider(this).get(AiTipsViewModel::class.java)
+            ViewModelProvider(this, factory).get(AiTipsViewModel::class.java)
 
         _binding = FragmentAiTipsBinding.inflate(inflater, container, false)
         val root: View = binding.root

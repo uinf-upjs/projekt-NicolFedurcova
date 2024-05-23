@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import sk.upjs.hackstock.MainApplication
 import sk.upjs.hackstock.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -22,15 +23,20 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        //THIS ADDED TO COMMUNICATE WITH DB
+        val application = requireNotNull(this.activity).application
+        val usersRepository = (application as MainApplication).repository
+        val factory = HomeViewModel.HomeViewModelFactory(usersRepository)
+        //TO HERE
         val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+            ViewModelProvider(this, factory).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
         homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+            textView.text = it.toString()
         }
         return root
     }

@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import sk.upjs.hackstock.R
+import sk.upjs.hackstock.MainApplication
 import sk.upjs.hackstock.databinding.FragmentQuizBinding
 
 
@@ -24,8 +24,13 @@ class QuizFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //THIS ADDED TO COMMUNICATE WITH DB
+        val application = requireNotNull(this.activity).application
+        val usersRepository = (application as MainApplication).repository
+        val factory = QuizViewModel.QuizViewModelFactory(usersRepository)
+        //TO HERE
         val quizViewModel =
-            ViewModelProvider(this).get(QuizViewModel::class.java)
+            ViewModelProvider(this, factory).get(QuizViewModel::class.java)
 
         _binding = FragmentQuizBinding.inflate(inflater, container, false)
         val root: View = binding.root

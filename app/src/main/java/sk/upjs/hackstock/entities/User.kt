@@ -9,11 +9,12 @@ import java.util.Date
 import java.util.UUID
 
 @Entity(tableName = "user")
-data class User (@PrimaryKey
-                 var id: UUID = UUID.randomUUID(),
+data class User (
+//                 @PrimaryKey(autoGenerate = true) //idk preco toto nefunguje
+//                 var userId: Long = 0,
                  val name: String,
                  val surname: String,
-                 //val dateOfBirth: Date,
+                 val dateOfBirth: Date,
                  val country: String,
                  val city: String,
                  val status: String,
@@ -21,6 +22,9 @@ data class User (@PrimaryKey
                  val annualIncome: Double,
                  val money: Double,
                  val score: Int): Serializable {
+    @PrimaryKey(autoGenerate = true) //idk preco toto nefunguje
+    var userId: Long = 0
 
-
+//    @PrimaryKey
+//    var userId: UUID = UUID.randomUUID()
 }

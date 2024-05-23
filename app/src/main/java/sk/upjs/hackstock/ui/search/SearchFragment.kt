@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import sk.upjs.hackstock.MainApplication
 import sk.upjs.hackstock.R
 import sk.upjs.hackstock.databinding.FragmentSearchBinding
+import sk.upjs.hackstock.ui.home.HomeViewModel
 
 
 class SearchFragment : Fragment() {
@@ -25,8 +27,13 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //THIS ADDED TO COMMUNICATE WITH DB
+        val application = requireNotNull(this.activity).application
+        val usersRepository = (application as MainApplication).repository
+        val factory = SearchViewModel.SearchViewModelFactory(usersRepository)
+        //TO HERE
         val searchViewModel =
-            ViewModelProvider(this).get(SearchViewModel::class.java)
+            ViewModelProvider(this, factory).get(SearchViewModel::class.java)
 
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         val root: View = binding.root
