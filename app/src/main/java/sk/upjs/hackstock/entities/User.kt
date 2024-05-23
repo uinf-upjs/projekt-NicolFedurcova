@@ -1,5 +1,6 @@
 package sk.upjs.hackstock.entities
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
@@ -8,9 +9,11 @@ import java.util.Date
 import java.util.UUID
 
 @Entity(tableName = "user")
-data class User (val name: String,
+data class User (@PrimaryKey
+                 var id: UUID = UUID.randomUUID(),
+                 val name: String,
                  val surname: String,
-                 val dateOfBirth: Date,
+                 //val dateOfBirth: Date,
                  val country: String,
                  val city: String,
                  val status: String,
@@ -19,6 +22,5 @@ data class User (val name: String,
                  val money: Double,
                  val score: Int): Serializable {
 
-    @PrimaryKey
-    var uuid: UUID = UUID.randomUUID()
+
 }

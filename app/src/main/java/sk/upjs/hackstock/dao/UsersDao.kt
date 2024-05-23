@@ -21,8 +21,8 @@ interface UsersDao {
     @Delete
     suspend fun deleteUser(user: User)
 
-    @Query("DELETE FROM user WHERE (name=:name AND surname=:surname AND dateOfBirth=:dateOfBirth)")
-    suspend fun deleteUserByNameSurnameBirthdate(name: String, surname: String, dateOfBirth: Date)
+    @Query("DELETE FROM user WHERE (name=:name AND surname=:surname)")
+    suspend fun deleteUserByNameSurnameBirthdate(name: String, surname: String)
 
     @Query("DELETE FROM user")
     suspend fun deleteAllUsers()
