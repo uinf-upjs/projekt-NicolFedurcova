@@ -58,17 +58,12 @@ abstract class AppDatabase : RoomDatabase(){
                                 scope.launch {
                                     it.usersDao().deleteAllUsers()
                                     it.sharesDao().deleteAllShares()
+                                    it.activityDao().deleteAllActivities()
+                                    it.questionDao().deleteAllQuestions()
 
                                     it.usersDao().insertUser(User("Jozko", "Mrkvicka", Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
-//                                    var jozko= it.usersDao().getAllUsersWithNameAndSurname("Jozko", "Mrkvicka")
-//                                    if(jozko.toList().size==1){
-//                                        it.sharesDao().insertShare(Share(jozko.toList().get(0).get(0).userId,"Google", "GOOG", 10.00, 1.0))
-//                                    }
                                     it.sharesDao().insertShare(Share(1,"Google", "GOOG", 10.00, 1.0))
-//                                    it.sharesDao().insertShare(Share(it.usersDao().getAllUsersWithNameAndSurname("Jozko", "Mrkvicka")
-//                                        .toList().get(0).get(0).userId,"Google", "GOOG", 10.00, 1.0))
                                     it.usersDao().insertUser(User("Petko", "Mrkvicka", Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
-
                                     it.sharesDao().insertShare(Share(2,"Apple", "APPL", 40.00, 1.0))
                                     it.activityDao().insertActivity(Activity(1,1,Date(),false,false))
                                     it.activityDao().insertActivity(Activity(2,2,Date(),false,false))
@@ -89,12 +84,12 @@ abstract class AppDatabase : RoomDatabase(){
     }
 }
 
-val MIGRATION_1_2 = object : Migration(1, 2) {
-    override fun migrate(database: SupportSQLiteDatabase) {
-        // Perform the migration operations
-        database.execSQL("ALTER TABLE user ADD COLUMN dateOfBirth LONG")
-    }
-}
+//val MIGRATION_1_2 = object : Migration(1, 2) {
+//    override fun migrate(database: SupportSQLiteDatabase) {
+//        // Perform the migration operations
+//        database.execSQL("ALTER TABLE user ADD COLUMN dateOfBirth LONG")
+//    }
+//}
 
 class Converters {
     @TypeConverter

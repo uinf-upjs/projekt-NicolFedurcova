@@ -9,11 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-<<<<<<< HEAD
+
 import sk.upjs.hackstock.MainApplication
-=======
+
 import androidx.recyclerview.widget.LinearLayoutManager
->>>>>>> search
+
 import sk.upjs.hackstock.R
 import sk.upjs.hackstock.databinding.FragmentSearchBinding
 import sk.upjs.hackstock.ui.home.HomeViewModel
