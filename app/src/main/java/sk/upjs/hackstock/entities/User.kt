@@ -14,6 +14,8 @@ data class User (
 //                 var userId: Long = 0,
                  val name: String,
                  val surname: String,
+                 val email: String, //need to check with regex ++++ CONSTRAIN UNIQUE
+                 val password: String, //simple for now, add salt and safety stuff later
                  val dateOfBirth: Date,
                  val country: String,
                  val city: String,

@@ -61,9 +61,9 @@ abstract class AppDatabase : RoomDatabase(){
                                     it.activityDao().deleteAllActivities()
                                     it.questionDao().deleteAllQuestions()
 
-                                    it.usersDao().insertUser(User("Jozko", "Mrkvicka", Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
+                                    it.usersDao().insertUser(User("Jozko", "Mrkvicka", "jm","hslo",Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
                                     it.sharesDao().insertShare(Share(1,"Google", "GOOG", 10.00, 1.0))
-                                    it.usersDao().insertUser(User("Petko", "Mrkvicka", Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
+                                    it.usersDao().insertUser(User("Petko", "Mrkvicka", "petko.mrkvicka@gmail.com","hslo", Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
                                     it.sharesDao().insertShare(Share(2,"Apple", "APPL", 40.00, 1.0))
                                     it.activityDao().insertActivity(Activity(1,1,Date(),false,false))
                                     it.activityDao().insertActivity(Activity(2,2,Date(),false,false))

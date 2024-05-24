@@ -25,8 +25,8 @@ class HomeFragment : Fragment() {
     ): View {
         //THIS ADDED TO COMMUNICATE WITH DB
         val application = requireNotNull(this.activity).application
-        val usersRepository = (application as MainApplication).repository
-        val factory = HomeViewModel.HomeViewModelFactory(usersRepository)
+        val appRepository = (application as MainApplication).repository
+        val factory = HomeViewModel.HomeViewModelFactory(appRepository)
         //TO HERE
         val homeViewModel =
             ViewModelProvider(this, factory).get(HomeViewModel::class.java)

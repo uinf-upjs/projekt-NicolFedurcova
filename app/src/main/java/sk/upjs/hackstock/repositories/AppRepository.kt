@@ -22,4 +22,12 @@ class AppRepository(
     fun sharesOfUser(userId:Long): Flow<List<Share>> = shareDao.getAllSharesOfUser(userId)
     fun activitiesOfUser(userId: Long): Flow<List<Activity>> = activityDao.getAllActivityOfUser(userId)
 
+    suspend fun getUserByEmailAndPassword(email:String, password:String): User?{
+        return userDao.getUserByEmailAndPassword(email, password)
+    }
+
+    suspend fun registerUser(user: User) {
+        userDao.insertUser(user)
+    }
+
 }

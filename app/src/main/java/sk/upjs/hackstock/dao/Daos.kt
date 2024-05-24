@@ -20,6 +20,9 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE (name=:name AND surname=:surname)")
     fun getAllUsersWithNameAndSurname(name: String, surname: String): Flow<List<User>>
 
+    @Query("SELECT * FROM user WHERE (email=:username AND password =:password)")
+    suspend fun getUserByEmailAndPassword(username: String, password: String): User?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: User)
 
