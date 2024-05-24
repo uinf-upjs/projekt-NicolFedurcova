@@ -79,6 +79,8 @@ dependencies {
     implementation ("io.ktor:ktor-client-json:1.6.7")
     implementation("io.ktor:ktor-client-serialization:1.6.3")
     implementation ("io.ktor:ktor-client-android:1.6.7")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    ksp("com.github.bumptech.glide:compiler:4.12.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
