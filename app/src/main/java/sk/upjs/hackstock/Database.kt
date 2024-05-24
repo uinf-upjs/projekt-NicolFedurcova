@@ -2,6 +2,7 @@ package sk.upjs.hackstock
 
 import androidx.room.RoomDatabase
 import android.content.Context
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.TypeConverter
@@ -9,22 +10,31 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
+import sk.upjs.hackstock.dao.ActivityDao
+import sk.upjs.hackstock.dao.QuestionDao
 import sk.upjs.hackstock.dao.ShareDao
 import sk.upjs.hackstock.dao.UserDao
+import sk.upjs.hackstock.entities.Activity
+import sk.upjs.hackstock.entities.Question
 import sk.upjs.hackstock.entities.Share
 import sk.upjs.hackstock.entities.User
 import java.util.Date
 import java.util.UUID
 
 
-@Database(entities = [User::class, Share::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Share::class, Activity::class, Question::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase(){
 
     abstract fun usersDao(): UserDao
     abstract fun sharesDao(): ShareDao
+    abstract fun activityDao(): ActivityDao
+
+    abstract fun questionDao(): QuestionDao
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
@@ -48,17 +58,21 @@ abstract class AppDatabase : RoomDatabase(){
                                 scope.launch {
                                     it.usersDao().deleteAllUsers()
                                     it.sharesDao().deleteAllShares()
-                                    it.usersDao().insertUser(User("Jozko", "Mrkvicka", Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
-                                    var jozko= it.usersDao().getAllUsersWithNameAndSurname("Jozko", "Mrkvicka")
-                                    if(jozko.toList().size==1){
-                                        it.sharesDao().insertShare(Share(jozko.toList().get(0).get(0).userId,"Google", "GOOG", 10.00, 1.0))
-                                    }
-                                    it.usersDao().insertUser(User("Petko", "Mrkvicka", Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
-                                    var petko= it.usersDao().getAllUsersWithNameAndSurname("Petko", "Mrkvicka")
-                                    if(petko.toList().size==1){
-                                        it.sharesDao().insertShare(Share(jozko.toList().get(0).get(0).userId,"Apple", "APPL", 40.00, 1.0))
-                                    }
 
+                                    it.usersDao().insertUser(User("Jozko", "Mrkvicka", Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
+//                                    var jozko= it.usersDao().getAllUsersWithNameAndSurname("Jozko", "Mrkvicka")
+//                                    if(jozko.toList().size==1){
+//                                        it.sharesDao().insertShare(Share(jozko.toList().get(0).get(0).userId,"Google", "GOOG", 10.00, 1.0))
+//                                    }
+                                    it.sharesDao().insertShare(Share(1,"Google", "GOOG", 10.00, 1.0))
+//                                    it.sharesDao().insertShare(Share(it.usersDao().getAllUsersWithNameAndSurname("Jozko", "Mrkvicka")
+//                                        .toList().get(0).get(0).userId,"Google", "GOOG", 10.00, 1.0))
+                                    it.usersDao().insertUser(User("Petko", "Mrkvicka", Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
+
+                                    it.sharesDao().insertShare(Share(2,"Apple", "APPL", 40.00, 1.0))
+                                    it.activityDao().insertActivity(Activity(1,1,Date(),false,false))
+                                    it.activityDao().insertActivity(Activity(2,2,Date(),false,false))
+                                    it.questionDao().insertQuestion(Question("What is share", "A)", "B)", "C) correct"))
                                 }
                             }
                         }

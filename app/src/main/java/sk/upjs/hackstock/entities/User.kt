@@ -22,7 +22,7 @@ data class User (
                  val annualIncome: Double,
                  val money: Double,
                  val score: Int): Serializable {
-    @PrimaryKey(autoGenerate = true) //idk preco toto nefunguje
+    @PrimaryKey(autoGenerate = true)
     var userId: Long = 0
 
 //    @PrimaryKey

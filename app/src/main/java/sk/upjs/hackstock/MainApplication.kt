@@ -9,6 +9,6 @@ class MainApplication : Application() {
 
     val applicationScope = CoroutineScope(SupervisorJob())
     val database by lazy { AppDatabase.getDatabase(this, applicationScope) }
-    val repository by lazy { AppRepository(database.usersDao(), database.sharesDao()) }
+    val repository by lazy { AppRepository(database.usersDao(), database.sharesDao(), database.activityDao(), database.questionDao()) }
 
 }

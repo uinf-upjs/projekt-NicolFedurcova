@@ -7,6 +7,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import sk.upjs.hackstock.entities.User
 import kotlinx.coroutines.flow.Flow
+import sk.upjs.hackstock.entities.Activity
+import sk.upjs.hackstock.entities.Question
 import sk.upjs.hackstock.entities.Share
 
 @Dao
@@ -51,4 +53,45 @@ interface ShareDao {
 
     @Query("DELETE FROM share")
     suspend fun deleteAllShares()
+}
+
+@Dao
+interface ActivityDao {
+
+    @Query("SELECT * FROM activity")
+    fun getAllActivities(): Flow<List<Activity>>
+
+    @Query("SELECT * FROM activity WHERE userId=:userId")
+    fun getAllActivityOfUser(userId:Long): Flow<List<Activity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertActivity(activity: Activity)
+
+    @Delete
+    suspend fun deleteActivity(activity: Activity)
+
+    @Query("DELETE FROM activity WHERE (userId=:userId)")
+    suspend fun deleteActivityByUserId(userId: Long)
+
+    @Query("DELETE FROM activity")
+    suspend fun deleteAllActivities()
+}
+
+@Dao
+interface QuestionDao {
+
+    @Query("SELECT * FROM question")
+    fun getAllQuestions(): Flow<List<Question>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertQuestion(question: Question)
+
+    @Delete
+    suspend fun deleteQuestion(question: Question)
+
+    @Query("DELETE FROM question WHERE (text=:text)")
+    suspend fun deleteQuestionByText(text: String)
+
+    @Query("DELETE FROM question")
+    suspend fun deleteAllQuestions()
 }
