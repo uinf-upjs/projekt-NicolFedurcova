@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- ZATIAL JE TU LEN IKONKA LOGOUT? POTOM SA MOZE PRIDAT ZE NASTAVENIE PROFILU A INE SRANDY-->
     <item
         android:id="@+id/action_logout"
         android:title="Logout"

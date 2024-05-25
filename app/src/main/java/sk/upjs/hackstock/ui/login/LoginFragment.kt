@@ -23,6 +23,8 @@ class LoginFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private var loginAttempts = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,12 +51,32 @@ class LoginFragment : Fragment() {
                 findNavController().navigate(R.id.action_loginFragment_to_fragment_home)
             } else {
                 Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show()
+                loginAttempts++
+                if (loginAttempts >= 3) {
+                    binding.loginButton.isEnabled = false // Disable login button
+                    binding.loginButton.postDelayed({
+                        binding.loginButton.isEnabled = true // Enable login button after 20 seconds
+                    }, 20000)
+                    loginAttempts=0
+                }
             }
         })
+
+        loginViewModel.warningMessage.observe(viewLifecycleOwner, Observer { message ->
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            binding.warning.apply {
+                text = message
+                visibility = if (message.isNullOrEmpty()) View.GONE else View.VISIBLE
+            }
+        })
+
         return root
 
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
 }

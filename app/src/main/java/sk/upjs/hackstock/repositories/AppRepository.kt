@@ -1,6 +1,9 @@
 package sk.upjs.hackstock.repositories
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
+import sk.upjs.hackstock.MainApplication
 import sk.upjs.hackstock.dao.ActivityDao
 import sk.upjs.hackstock.dao.QuestionDao
 import sk.upjs.hackstock.dao.ShareDao
@@ -28,6 +31,13 @@ class AppRepository(
 
     suspend fun registerUser(user: User) {
         userDao.insertUser(user)
+    }
+
+    suspend fun clearUserSession() {
+        withContext(Dispatchers.IO) {
+            // Clear user data from SharedPreferences
+            MainApplication.prefs.edit().clear().apply()
+        }
     }
 
 }
