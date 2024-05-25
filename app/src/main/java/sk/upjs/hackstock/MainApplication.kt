@@ -3,6 +3,10 @@ package sk.upjs.hackstock
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import sk.upjs.hackstock.repositories.AppRepository
@@ -11,7 +15,7 @@ class MainApplication : Application() {
 
     companion object {
         lateinit var prefs: SharedPreferences
-        private const val PREFS_NAME = "user_preferences"
+        const val PREFS_NAME = "user_preferences"
         const val USER_EMAIL_KEY = "user_email"
     }
 
@@ -24,8 +28,12 @@ class MainApplication : Application() {
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
+
+
     fun getSharedPreferences(): SharedPreferences {
         return prefs
     }
+
+
 
 }

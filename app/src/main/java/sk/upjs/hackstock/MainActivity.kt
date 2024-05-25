@@ -1,5 +1,6 @@
 package sk.upjs.hackstock
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -10,6 +11,7 @@ import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -55,6 +57,15 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        val userEmail = getUserEmailFromPreferences()
+        if (userEmail != null) {
+            // User is logged in, navigate to the home screen
+            navigateToHomeScreen()
+        } else {
+            // User is not logged in, show the login screen
+            navigateToLoginScreen()
+        }
+
         navController.addOnDestinationChangedListener { _, destination, _ ->
             invalidateOptionsMenu()
             checkUserStatus()
@@ -62,6 +73,22 @@ class MainActivity : AppCompatActivity() {
 
         checkUserStatus()
 
+    }
+
+    private fun getUserEmailFromPreferences(): String? {
+        // Retrieve the user's email from SharedPreferences
+        return getSharedPreferences(MainApplication.PREFS_NAME, Context.MODE_PRIVATE)
+            .getString(MainApplication.USER_EMAIL_KEY, null)
+    }
+
+    private fun navigateToHomeScreen() {
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navController.navigate(R.id.action_loginFragment_to_fragment_home)
+    }
+
+    private fun navigateToLoginScreen() {
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        navController.navigate(R.id.loginFragment)
     }
 
     private fun checkUserStatus() {
@@ -87,7 +114,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-
             R.id.action_logout -> {
                 // Perform logout action
                 loginViewModel.logout()
