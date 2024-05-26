@@ -11,13 +11,13 @@ import java.util.Date
         entity = User::class,
         parentColumns = ["userId"],
         childColumns = ["userId"],
-        onDelete = ForeignKey.RESTRICT
+        onDelete = ForeignKey.NO_ACTION
     ),
     ForeignKey(
         entity = Share::class,
         parentColumns = ["shareId"],
         childColumns = ["shareId"],
-        onDelete = ForeignKey.RESTRICT
+        //onDelete = ForeignKey.NO_ACTION
     )
 ])
 data class Activity (

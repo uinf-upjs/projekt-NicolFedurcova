@@ -33,6 +33,21 @@ class AppRepository(
         userDao.insertUser(user)
     }
 
+    suspend fun deleteShare(share: Share){
+        shareDao.deleteShare(share)
+    }
+
+    suspend fun getUsersMoney(userName: String): Double {
+        return userDao.getUserByEmail(userName)?.money ?: 0.0
+    }
+
+    suspend fun updateUsersMoney(userName: String, amount:Double) {
+        val oldUser = userDao.getUserByEmail(userName)
+        if (oldUser != null) {
+            return userDao.updateUserMoney(oldUser.userId, amount)
+        }
+    }
+
     suspend fun clearUserSession() {
         withContext(Dispatchers.IO) {
             // Clear user data from SharedPreferences

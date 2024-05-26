@@ -7,12 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import sk.upjs.hackstock.entities.Share
 import sk.upjs.hackstock.repositories.AppRepository
-import sk.upjs.hackstock.ui.search.SearchResult
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -22,6 +20,10 @@ class DetailViewModel( private val appRepository: AppRepository,  private val cu
     private val _text = MutableLiveData<List<Pair<String,Float>>>()
     val text: LiveData<List<Pair<String,Float>>> = _text
     private val API_KEY = "5GQf4pHtMpmFCDB0iPVyiCQoDWwaG1cq"
+    private val _info = MutableLiveData<String>()
+    val info: LiveData<String> = _info
+    private val _sp = MutableLiveData<Double>()
+    val stockPriceOfCurrentShare: LiveData<Double> = _sp
 
     init {
         fetchData()
@@ -53,6 +55,29 @@ class DetailViewModel( private val appRepository: AppRepository,  private val cu
                 val chartData = service.getIntradayPrices(timeframe, symbol, fromDate, toDate, API_KEY)
                 Log.e("DATE", chartData.toString())
                 val prices = processPriceData(chartData)
+
+                //val recommendations = service.getRecomm(symbol, API_KEY)
+                val infos = service.getInfo(symbol,API_KEY)
+                var result = ""
+                if(!infos.isEmpty()){
+                    _sp.postValue(infos.get(0).price)
+                    result = result + "  Current price: " + infos.get(0).price +
+                            " \n Percentage change: " + infos.get(0).changesPercentage +
+                            " \n Day Low: " + infos.get(0).dayLow +
+                            " \n Day High: " + infos.get(0).dayHigh+
+                            " \n Price average 50: " + infos.get(0).priceAvg50 +
+                            " \n My amount: " + currentShare.amount +
+                            " \n My profit so far: " + currentShare.price
+                }
+//                if(!recommendations.isEmpty()){
+//                    result = result + "Analyst Ratings Buy: " + recommendations.get(0).analystRatingsbuy +
+//                            "\n Analyst Ratings Hold: " + recommendations.get(0).analystRatingsHold +
+//                            "\n Analyst Ratings Sell: " + recommendations.get(0).analystRatingsSell
+//                }
+
+                Log.e("RESS", result)
+                _info.postValue(result)
+
 
                 _text.postValue(prices)
             } catch (e: Exception) {

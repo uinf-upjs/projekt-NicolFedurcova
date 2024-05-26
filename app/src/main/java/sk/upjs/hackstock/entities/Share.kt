@@ -15,7 +15,7 @@ import java.io.Serializable
         entity = User::class,
         parentColumns = ["userId"],
         childColumns = ["userId"],
-        onDelete = ForeignKey.RESTRICT //TOTO MOZNOESTE ASI ZMENIT
+        //onDelete = ForeignKey.NO_ACTION //TOTO MOZNOESTE ASI ZMENIT
     )
 ])
 data class Share (

@@ -28,11 +28,11 @@
         app:layout_constraintTop_toBottomOf="@id/text_detail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Chart Data" />
+        tools:text="Chart Data for the last 7 days" />
 
     <com.db.williamchart.view.LineChartView
         android:id="@+id/lineChart"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="300dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
@@ -46,5 +46,27 @@
         app:layout_constraintTop_toBottomOf="@id/tvChartData"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/text_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="textStart"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lineChart" />
+
+<!--    <Button-->
+<!--        android:id="@+id/btnSell"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Sell"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/text_info"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        android:layout_marginTop="16dp"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package sk.upjs.hackstock.ui.detail
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +17,6 @@ import kotlinx.coroutines.launch
 import sk.upjs.hackstock.MainApplication
 import sk.upjs.hackstock.databinding.FragmentDetailBinding
 import sk.upjs.hackstock.entities.Share
-import java.util.Map
 
 class DetailFragment: Fragment() {
     private var _binding: FragmentDetailBinding? = null
@@ -37,11 +38,14 @@ class DetailFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         //THIS ADDED TO COMMUNICATE WITH DB
         val application = requireNotNull(this.activity).application
-        val usersRepository = (application as MainApplication).repository
-        val factory = DetailViewModel.DetailViewModelFactory(usersRepository, share)
+        val appRepository = (application as MainApplication).repository
+        val factory = DetailViewModel.DetailViewModelFactory(appRepository, share)
         //TO HERE
+        val userName = application.getSharedPreferences().getString("user_email", null)
+
         val detailViewModel =
             ViewModelProvider(this, factory).get(DetailViewModel::class.java)
 
@@ -51,6 +55,10 @@ class DetailFragment: Fragment() {
         val textView: TextView = binding.textDetail
         //textView.text = share.company
         textView.text = detailViewModel.name
+
+        detailViewModel.info.observe(viewLifecycleOwner) {
+            binding.textInfo.text = detailViewModel.info.value
+        }
 
 
         detailViewModel.text.observe(viewLifecycleOwner) {
@@ -70,6 +78,24 @@ class DetailFragment: Fragment() {
                 }
             }
         }
+
+//        val btnSell: Button = binding.btnSell
+//        btnSell.setOnClickListener {
+//            CoroutineScope(Dispatchers.Main).launch {
+//
+//                val userMoney =
+//                    userName?.let { it1 -> appRepository.getUsersMoney(it1) } // Get user's money from the database
+//                val stockPrice = detailViewModel.stockPriceOfCurrentShare // Get the current stock price
+//
+//                val remainingMoney = userMoney?.plus(stockPrice.value!!)
+//                if (userName != null && remainingMoney!=null) {
+//                    appRepository.updateUsersMoney(userName, remainingMoney)
+//                } // Update user's money in the database
+//                appRepository.deleteShare(share) // Remove the stock from the database
+//
+//
+//            }
+//        }
 
 
 

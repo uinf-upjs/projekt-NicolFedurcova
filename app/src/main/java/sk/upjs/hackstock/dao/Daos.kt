@@ -23,11 +23,18 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE (email=:username AND password =:password)")
     suspend fun getUserByEmailAndPassword(username: String, password: String): User?
 
+    @Query("SELECT * FROM user WHERE (email=:username)")
+    suspend fun getUserByEmail(username: String): User?
+
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: User)
 
     @Delete
     suspend fun deleteUser(user: User)
+
+    @Query("UPDATE user SET money = :money WHERE userId = :userId")
+    suspend fun updateUserMoney(userId: Long, money: Double)
 
     @Query("DELETE FROM user WHERE (name=:name AND surname=:surname)")
     suspend fun deleteUserByNameSurnameBirthdate(name: String, surname: String)
