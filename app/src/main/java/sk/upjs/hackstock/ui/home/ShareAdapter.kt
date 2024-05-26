@@ -9,7 +9,7 @@ import sk.upjs.hackstock.R
 import sk.upjs.hackstock.entities.Share
 import sk.upjs.hackstock.ui.search.SearchResult
 
-class ShareAdapter(private var shares: List<Share>) : RecyclerView.Adapter<ShareAdapter.ShareViewHolder>() {
+class ShareAdapter(private var shares: List<Share>, private val listener: OnItemClickListener) : RecyclerView.Adapter<ShareAdapter.ShareViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShareViewHolder {
@@ -24,14 +24,27 @@ class ShareAdapter(private var shares: List<Share>) : RecyclerView.Adapter<Share
 
     }
 
+    fun getCurrentShare(position: Int): Share{
+        return shares[position]
+    }
+
     override fun getItemCount(): Int {
         return shares.size
     }
 
-    inner class ShareViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ShareViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
         val textViewShareName: TextView = itemView.findViewById(R.id.textViewShareName)
         val textViewSharePrice: TextView = itemView.findViewById(R.id.textViewSharePrice)
+        init {
+            itemView.setOnClickListener(this)
+        }
 
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(position)
+            }
+        }
         fun bind(currentShare: Share) {
 
             textViewShareName.text = currentShare.company
@@ -49,6 +62,10 @@ class ShareAdapter(private var shares: List<Share>) : RecyclerView.Adapter<Share
         notifyDataSetChanged()
     }
 
+}
+
+interface OnItemClickListener {
+    fun onItemClick(position: Int)
 }
 
 

@@ -11,14 +11,10 @@ import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import sk.upjs.hackstock.databinding.ActivityMainBinding
-import androidx.navigation.fragment.findNavController
-import sk.upjs.hackstock.ui.login.LoginFragment
 import sk.upjs.hackstock.ui.login.LoginViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -49,7 +45,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_ai_tips,
                 R.id.navigation_game,
                 R.id.navigation_quiz,
-                R.id.loginFragment
+                R.id.loginFragment,
+                R.id.detailFragment
 
             )
         )

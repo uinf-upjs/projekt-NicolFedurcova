@@ -1,19 +1,21 @@
 package sk.upjs.hackstock.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import sk.upjs.hackstock.MainApplication
+import sk.upjs.hackstock.R
 import sk.upjs.hackstock.databinding.FragmentHomeBinding
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), OnItemClickListener {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -41,7 +43,7 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
 
-        adapter = ShareAdapter(listOf())
+        adapter = ShareAdapter(listOf(), this)
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext().applicationContext)
         recyclerView.adapter = adapter
@@ -55,6 +57,16 @@ class HomeFragment : Fragment() {
 
 
         return root
+    }
+    override fun onItemClick(position: Int) {
+        // Navigate to new fragment based on item click
+        val share = adapter.getCurrentShare(position)
+        Log.d("HomeFragment", "Clicked on item: ${share.company}")
+        val navController = findNavController()
+        val bundle = Bundle().apply {
+            putParcelable("share", share)
+        }
+        navController.navigate(R.id.action_home_to_detail, bundle)
     }
 
     override fun onDestroyView() {
