@@ -21,7 +21,7 @@ class SearchPage {
     var searchResults: List<SearchResult> = listOf()
     private var isLoading: Boolean = false
     private var error: String = ""
-    private val API_KEY = "iEDFPAm1KWW43YDJxgIEW3aFkVpdLzfr" // Insert API here
+    private val API_KEY = "iEDFPAm1KWW43YDJxgIEW3aFkVpdLzfr" // Insert API here //TOT moZNO DO SHARED PREFERENCES
 
     private val client = HttpClient {
         install(JsonFeature) {

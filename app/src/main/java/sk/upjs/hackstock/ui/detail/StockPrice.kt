@@ -7,3 +7,4 @@ data class StockPrice(
     val low: Double,
     val close: Double
 )
+
