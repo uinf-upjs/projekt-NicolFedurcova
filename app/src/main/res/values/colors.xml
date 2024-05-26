@@ -15,4 +15,9 @@
     <color name="ic_launcher_hs_background">#FFFFFFFF</color>
     <color name="logout_icon_color">#FFFFFF</color>
     <color name="red">#B30B0B</color>
+    <color name="grey">#B3B6BB</color>
+
+    <color name="price_increase">#16B30B</color>
+    <color name="price_decrease">@color/red</color>
+    <color name="price_neutral">@color/black</color>
 </resources>

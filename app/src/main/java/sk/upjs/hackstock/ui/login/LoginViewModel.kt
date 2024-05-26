@@ -29,6 +29,7 @@ class LoginViewModel(private val appRepository: AppRepository) : ViewModel() {
                 // Save user session data to SharedPreferences
                 MainApplication.prefs.edit().apply {
                     putString("user_email", user.email)
+                    putLong("user_id", user.userId)
                     apply()
                 }
             } else{

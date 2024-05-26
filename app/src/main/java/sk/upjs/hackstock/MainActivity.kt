@@ -54,6 +54,9 @@ class MainActivity : AppCompatActivity() {
             )
         )
         //setSupportActionBar(binding.toolbar)
+        actionBar?.elevation = 0F
+        supportActionBar?.elevation=0F
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 

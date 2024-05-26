@@ -12,5 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/black</item>
         <!-- Customize your theme here. -->
+        <item name="colorSeparator">@color/white</item>
+        <item name="colorBigName">@color/white</item>
     </style>
 </resources>

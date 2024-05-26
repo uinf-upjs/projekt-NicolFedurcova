@@ -63,10 +63,12 @@ class LoginFragment : Fragment() {
         })
 
         loginViewModel.warningMessage.observe(viewLifecycleOwner, Observer { message ->
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-            binding.warning.apply {
-                text = message
-                visibility = if (message.isNullOrEmpty()) View.GONE else View.VISIBLE
+            if (loginAttempts>0){
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                binding.warning.apply {
+                    text = message
+                    visibility = if (message.isNullOrEmpty()) View.GONE else View.VISIBLE
+                }
             }
         })
 

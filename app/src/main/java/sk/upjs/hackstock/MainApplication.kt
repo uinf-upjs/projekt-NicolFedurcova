@@ -17,6 +17,7 @@ class MainApplication : Application() {
         lateinit var prefs: SharedPreferences
         const val PREFS_NAME = "user_preferences"
         const val USER_EMAIL_KEY = "user_email"
+        const val USER_ID_KEY = "user_id"
     }
 
     val applicationScope = CoroutineScope(SupervisorJob())

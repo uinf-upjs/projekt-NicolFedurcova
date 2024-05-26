@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import sk.upjs.hackstock.MainApplication
 import sk.upjs.hackstock.databinding.FragmentHomeBinding
+
 
 class HomeFragment : Fragment() {
 
@@ -18,6 +21,9 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private lateinit var adapter: ShareAdapter
+    private lateinit var recyclerView: RecyclerView
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,7 +32,7 @@ class HomeFragment : Fragment() {
         //THIS ADDED TO COMMUNICATE WITH DB
         val application = requireNotNull(this.activity).application
         val appRepository = (application as MainApplication).repository
-        val factory = HomeViewModel.HomeViewModelFactory(appRepository)
+        val factory = HomeViewModel.HomeViewModelFactory(appRepository, requireContext().applicationContext)
         //TO HERE
         val homeViewModel =
             ViewModelProvider(this, factory).get(HomeViewModel::class.java)
@@ -34,14 +40,20 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it.toString()
+
+        adapter = ShareAdapter(listOf())
+        recyclerView = binding.recyclerView
+        recyclerView.layoutManager = LinearLayoutManager(requireContext().applicationContext)
+        recyclerView.adapter = adapter
+
+        binding.text.text = homeViewModel.text
+
+        // Observe LiveData in ViewModel
+        homeViewModel.shares.observe(viewLifecycleOwner) { shares ->
+            adapter.updateResults(shares)
         }
-        val textView2: TextView=binding.textHome2
-        homeViewModel.text2.observe(viewLifecycleOwner) {
-            textView2.text = it.toString()
-        }
+
+
         return root
     }
 
