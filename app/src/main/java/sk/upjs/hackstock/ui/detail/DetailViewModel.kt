@@ -14,9 +14,16 @@ import sk.upjs.hackstock.repositories.AppRepository
 import java.text.SimpleDateFormat
 import java.util.Date
 
-class DetailViewModel( private val appRepository: AppRepository,  private val currentShare: Share) : ViewModel() {
+class DetailViewModel(
+    private val appRepository: AppRepository,
+    private val currentShareCompany: String,
+    private val currentShareShortName: String,
+    private val sourceFragment: String,
+    private val myAmount:Double?,
+    private val myProfit:Double?) : ViewModel() {
 
-    val name = currentShare.company
+    //val name = currentShare.company
+    val name = currentShareCompany
     private val _text = MutableLiveData<List<Pair<String,Float>>>()
     val text: LiveData<List<Pair<String,Float>>> = _text
     private val API_KEY = "5GQf4pHtMpmFCDB0iPVyiCQoDWwaG1cq"
@@ -40,7 +47,7 @@ class DetailViewModel( private val appRepository: AppRepository,  private val cu
 
                 val service = retrofit.create(StockService::class.java)
 
-                val symbol = currentShare.shortname  // Replace with desired symbol
+                val symbol = currentShareShortName  // Replace with desired symbol
                 val timeframe = "1hour"  // Change to desired timeframe (1min, 15min, etc.)
 
                 val today = Date() // Get today's date
@@ -61,13 +68,22 @@ class DetailViewModel( private val appRepository: AppRepository,  private val cu
                 var result = ""
                 if(!infos.isEmpty()){
                     _sp.postValue(infos.get(0).price)
-                    result = result + "  Current price: " + infos.get(0).price +
-                            " \n Percentage change: " + infos.get(0).changesPercentage +
-                            " \n Day Low: " + infos.get(0).dayLow +
-                            " \n Day High: " + infos.get(0).dayHigh+
-                            " \n Price average 50: " + infos.get(0).priceAvg50 +
-                            " \n My amount: " + currentShare.amount +
-                            " \n My profit so far: " + currentShare.price
+                    if(sourceFragment=="HomeFragment"){
+                        result = result + "  Current price: " + infos.get(0).price +
+                                " \n Percentage change: " + infos.get(0).changesPercentage +
+                                " \n Day Low: " + infos.get(0).dayLow +
+                                " \n Day High: " + infos.get(0).dayHigh+
+                                " \n Price average 50: " + infos.get(0).priceAvg50 +
+                                " \n My amount: " + myAmount +
+                                " \n My profit so far: " + myProfit
+                    } else{
+                        result = result + "  Current price: " + infos.get(0).price +
+                                " \n Percentage change: " + infos.get(0).changesPercentage +
+                                " \n Day Low: " + infos.get(0).dayLow +
+                                " \n Day High: " + infos.get(0).dayHigh+
+                                " \n Price average 50: " + infos.get(0).priceAvg50
+
+                    }
                 }
 //                if(!recommendations.isEmpty()){
 //                    result = result + "Analyst Ratings Buy: " + recommendations.get(0).analystRatingsbuy +
@@ -107,12 +123,16 @@ class DetailViewModel( private val appRepository: AppRepository,  private val cu
 
     class DetailViewModelFactory(
         private val appRepository: AppRepository,
-        private val currentShare: Share
+        private val currentShareName: String,
+        private val currentShareShortName: String,
+        private val sourceFragment: String,
+        private val myAmount: Double?,
+        private val myProfit:Double?
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return DetailViewModel(appRepository, currentShare) as T
+                return DetailViewModel(appRepository, currentShareName, currentShareShortName, sourceFragment, myAmount, myProfit) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

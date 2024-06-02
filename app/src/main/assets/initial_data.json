@@ -11,13 +11,13 @@
       "status": "married",
       "occupation": "doctor",
       "annualIncome": 200000.00,
-      "money": 100.00,
+      "money": 1000.00,
       "score": 100
     },
     {
       "name": "Petko",
       "surname": "Mrkvicka",
-      "email": "petko.mrkvicka@example.com",
+      "email": "pm",
       "password": "hslo",
       "dateOfBirth": "1992-01-01T00:00:00.000Z",
       "country": "USA",
@@ -25,15 +25,15 @@
       "status": "married",
       "occupation": "doctor",
       "annualIncome": 200000.00,
-      "money": 100.00,
+      "money": 1000.00,
       "score": 100
     }
   ],
   "shares": [
-    {"userId": 1, "company": "Google", "shortname": "GOOG", "price": -150.00, "amount": 10.0, "visibility": 1},
-    {"userId": 1, "company": "Amazon", "shortname": "AMZN", "price": -300.00, "amount": 5.0, "visibility": 1},
-    {"userId": 1, "company": "Facebook", "shortname": "META", "price": -250.00, "amount": 20.0, "visibility": 1},
-    {"userId": 2, "company": "Apple", "shortname": "AAPL", "price": -120.00, "amount": 15.0, "visibility": 1}
+    {"userId": 1, "company": "Alphabet Inc.", "shortname": "GOOG", "price": -150.00, "amount": 10.0, "visibility": 1},
+    {"userId": 1, "company": "Amazon.com, Inc.", "shortname": "AMZN", "price": -300.00, "amount": 5.0, "visibility": 1},
+    {"userId": 1, "company": "Meta Platforms, Inc.", "shortname": "META", "price": -250.00, "amount": 20.0, "visibility": 1},
+    {"userId": 2, "company": "Apple Inc.", "shortname": "AAPL", "price": -120.00, "amount": 15.0, "visibility": 1}
   ],
   "activities": [
     {"userId": 1, "shareId": 1, "date": "2022-01-01T00:00:00.000Z", "sell": false, "profit": -150.0},

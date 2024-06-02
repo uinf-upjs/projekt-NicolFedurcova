@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.room.Transaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
 import sk.upjs.hackstock.MainApplication
 import sk.upjs.hackstock.dao.ActivityDao
@@ -14,6 +15,7 @@ import sk.upjs.hackstock.entities.Activity
 import sk.upjs.hackstock.entities.Question
 import sk.upjs.hackstock.entities.Share
 import sk.upjs.hackstock.entities.User
+import sk.upjs.hackstock.ui.search.SearchResult
 import java.util.Date
 
 class AppRepository(
@@ -77,21 +79,63 @@ class AppRepository(
     }
 
     @Transaction
-    suspend fun sellShare(userName: String, priceOfShare: Double, share: Share) {
+    suspend fun sellShare(userName: String, priceOfShare: Double, share: Share, amount2: Double) { //TREBA DODAT AMOUNT!!!
         val userMoney = userDao.getUserByEmail(userName)?.money ?: 0.0
         val user = userDao.getUserByEmail(userName)
         if (user != null) {
-            userDao.updateUserMoney(user.userId, userMoney+priceOfShare)
+            userDao.updateUserMoney(user.userId, userMoney+(priceOfShare*amount2))
         }
-        Log.e("SETNULLSHAREUSER", "share ID: ${share.shareId}")
+        Log.e("TU", "share ID: ${share.shareId}")
 
-        shareDao.setInvisible(share.shareId)
-        //shareDao.deleteShare(share)
+        if(share.amount > amount2){
+            shareDao.updateShareAmount(share.shareId, share.amount-amount2)
+            shareDao.updateSharePrice(share.shareId, share.price+(priceOfShare*amount2))
+        } else {
+            //nastane len ak sa rovnaju
+            shareDao.updateShareAmount(share.shareId, share.amount-amount2)
+            shareDao.updateSharePrice(share.shareId, share.price+(priceOfShare*amount2))
+            shareDao.setInvisible(share.shareId)
+        }
+
         if (user != null) {
             activityDao.insertActivity(Activity(user.userId, share.shareId,
-                Date(), true, priceOfShare))
+                Date(), true, (priceOfShare*amount2)))
         }
-        Log.e("SUCCESSELL", "Successfully sold share")
+        Log.e("TU", "Successfully sold share")
+    }
+
+    @Transaction
+    suspend fun buyShare(userName: String, priceOfShare: Double, amount2:Double, searchResult: SearchResult):Boolean {
+        val userMoney = userDao.getUserByEmail(userName)?.money ?: 0.0
+        val user = userDao.getUserByEmail(userName)
+        lateinit var share: Share
+
+        if (user != null && userMoney >= (priceOfShare*amount2)) {
+            userDao.updateUserMoney(user.userId, userMoney-(priceOfShare*amount2))
+        } else if(userMoney<priceOfShare){
+            return false
+        }
+
+        if (user != null) {
+            var shareId: Long
+            val existingShare=shareDao.getShareByNameAndSymbolAndUser(searchResult.name, searchResult.symbol, user.userId)
+            if(existingShare!=null){
+                shareId = existingShare.shareId
+                shareDao.updateShareAmount(shareId, existingShare.amount+amount2)
+                shareDao.updateSharePrice(shareId, existingShare.price-(priceOfShare*amount2))
+                shareDao.setVisible(shareId)
+            }else{
+                shareId = shareDao.insertShare(Share(user.userId, searchResult.name, searchResult.symbol, -(priceOfShare*amount2), amount = amount2, visibility = 1))
+            }
+            share = shareDao.getShareById(shareId)!!
+        }
+        Log.e("TU", "new share created")
+        if (user != null && share != null){
+            activityDao.insertActivity(Activity(user.userId, share.shareId,
+                Date(), false, -(priceOfShare*amount2)))
+        }
+        Log.e("TU", "Successfully bought share and activity created")
+        return true
     }
 
 

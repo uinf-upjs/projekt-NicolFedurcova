@@ -53,7 +53,13 @@ interface ShareDao {
     fun getAllSharesOfUser(userId:Long): Flow<List<Share>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertShare(share: Share)
+    suspend fun insertShare(share: Share): Long
+
+    @Query("SELECT * FROM share WHERE (shareId=:shareId)")
+    suspend fun getShareById(shareId: Long): Share?
+
+    @Query("SELECT * FROM share WHERE (userId= :userId AND company=:company AND shortname=:shortName)")
+    suspend fun getShareByNameAndSymbolAndUser(company: String, shortName:String, userId: Long): Share?
 
     @Delete
     suspend fun deleteShare(share: Share)
@@ -67,8 +73,20 @@ interface ShareDao {
     @Query("SELECT * FROM share WHERE userId = :userId AND visibility = 1")
     fun getVisibleSharesOfUser(userId: Long): Flow<List<Share>>
 
+    @Query("SELECT * FROM share WHERE (userId = :userId AND company= :company AND shortname= :shortName AND price= :price AND amount= :amount AND visibility = :visibility)")
+    fun getShareByDetails(userId: Long, company: String, shortName: String, price: Double, amount: Double, visibility: Byte): Flow<List<Share>>
+
     @Query("UPDATE share SET visibility = 0 WHERE (shareId= :shareId )") //0 je ekvivalent NULL
     suspend fun setInvisible(shareId:Long)
+
+    @Query("UPDATE share SET visibility = 1 WHERE (shareId= :shareId )") //0 je ekvivalent NULL
+    suspend fun setVisible(shareId:Long)
+
+    @Query("UPDATE share SET amount = :amount WHERE (shareId= :shareId )") //0 je ekvivalent NULL
+    suspend fun updateShareAmount(shareId:Long, amount: Double)
+
+    @Query("UPDATE share SET price = :price WHERE (shareId= :shareId )") //0 je ekvivalent NULL
+    suspend fun updateSharePrice(shareId:Long, price: Double)
 }
 
 @Dao

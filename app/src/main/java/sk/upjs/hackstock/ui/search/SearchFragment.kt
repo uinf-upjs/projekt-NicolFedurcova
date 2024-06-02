@@ -4,11 +4,13 @@ package sk.upjs.hackstock.ui.search
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 
 import sk.upjs.hackstock.MainApplication
 
@@ -17,9 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import sk.upjs.hackstock.R
 import sk.upjs.hackstock.databinding.FragmentSearchBinding
 import sk.upjs.hackstock.ui.home.HomeViewModel
+import sk.upjs.hackstock.ui.home.OnItemClickListener
 
 
-class SearchFragment : Fragment() {
+class SearchFragment : Fragment(), OnItemClickListener {
 
     private var _binding: FragmentSearchBinding? = null
 
@@ -54,7 +57,7 @@ class SearchFragment : Fragment() {
         }
 
 
-        searchResultsAdapter = SearchResultsAdapter(listOf())
+        searchResultsAdapter = SearchResultsAdapter(listOf(), this)
         binding.searchResultsRecyclerView?.layoutManager = LinearLayoutManager(context)
         binding.searchResultsRecyclerView?.adapter = searchResultsAdapter
 
@@ -62,6 +65,20 @@ class SearchFragment : Fragment() {
             searchResultsAdapter.updateResults(results)
         }
         return root
+    }
+
+    override fun onItemClick(position: Int) {
+        // Navigate to new fragment based on item click
+        val share = searchResultsAdapter.getCurrentShare(position)
+        Log.e("SearchFragment", "Clicked on item: ${share.name}")
+        val navController = findNavController()
+        val bundle = Bundle().apply {
+            putString("sourceFragment", "SearchFragment")
+            putString("company", share.name)
+            putString("symbol", share.symbol)
+
+        }
+        navController.navigate(R.id.action_search_to_detail, bundle)
     }
 
     override fun onDestroyView() {

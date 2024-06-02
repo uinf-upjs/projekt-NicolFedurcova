@@ -61,10 +61,12 @@ class HomeFragment : Fragment(), OnItemClickListener {
     override fun onItemClick(position: Int) {
         // Navigate to new fragment based on item click
         val share = adapter.getCurrentShare(position)
-        Log.d("HomeFragment", "Clicked on item: ${share.company}")
+        Log.e("HomeFragment", "Clicked on item: ${share.company}")
         val navController = findNavController()
         val bundle = Bundle().apply {
+            putString("sourceFragment", "HomeFragment")
             putParcelable("share", share)
+
         }
         navController.navigate(R.id.action_home_to_detail, bundle)
     }

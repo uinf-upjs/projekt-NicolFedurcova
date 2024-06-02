@@ -66,6 +66,8 @@ class LoginViewModel(private val appRepository: AppRepository) : ViewModel() {
         viewModelScope.launch {
             // Clear user session data
             appRepository.clearUserSession()
+            MainApplication.prefs.edit().remove("user_email").apply()
+
         }
     }
 
