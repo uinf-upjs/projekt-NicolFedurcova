@@ -9,6 +9,8 @@ import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.flow.first
@@ -19,9 +21,12 @@ import sk.upjs.hackstock.dao.QuestionDao
 import sk.upjs.hackstock.dao.ShareDao
 import sk.upjs.hackstock.dao.UserDao
 import sk.upjs.hackstock.entities.Activity
+import sk.upjs.hackstock.entities.InitialData
 import sk.upjs.hackstock.entities.Question
 import sk.upjs.hackstock.entities.Share
 import sk.upjs.hackstock.entities.User
+import sk.upjs.hackstock.repositories.AppRepository
+import java.io.InputStreamReader
 import java.util.Date
 import java.util.UUID
 
@@ -33,8 +38,8 @@ abstract class AppDatabase : RoomDatabase(){
     abstract fun usersDao(): UserDao
     abstract fun sharesDao(): ShareDao
     abstract fun activityDao(): ActivityDao
-
     abstract fun questionDao(): QuestionDao
+
 
     companion object {
         // Singleton prevents multiple instances of database opening at the
@@ -56,23 +61,7 @@ abstract class AppDatabase : RoomDatabase(){
                             super.onCreate(db)
                             INSTANCE?.let {
                                 scope.launch {
-                                    it.usersDao().deleteAllUsers()
-                                    it.sharesDao().deleteAllShares()
-                                    it.activityDao().deleteAllActivities()
-                                    it.questionDao().deleteAllQuestions()
-
-                                    it.usersDao().insertUser(User("Jozko", "Mrkvicka", "jm","hslo",Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
-                                    it.sharesDao().insertShare(Share(1,"Google", "GOOG", -10.00, 1.0))
-                                    it.sharesDao().insertShare(Share(1,"Amazon", "AMZN", -20.00, 1.0))
-                                    it.sharesDao().insertShare(Share(1,"Facebook", "META", -50.00, 1.0))
-
-                                    it.usersDao().insertUser(User("Petko", "Mrkvicka", "petko.mrkvicka@gmail.com","hslo", Date(),"USA", "NYC", "married", "doctor", 200000.00, 100.00, 100 ))
-                                    it.sharesDao().insertShare(Share(2,"Apple", "AAPL", -40.00, 1.0))
-                                    it.activityDao().insertActivity(Activity(1,1,Date(),false,false))
-                                    it.activityDao().insertActivity(Activity(1,3,Date(),false,false))
-                                    it.activityDao().insertActivity(Activity(1,4,Date(),false,false))
-                                    it.activityDao().insertActivity(Activity(2,2,Date(),false,false))
-                                    it.questionDao().insertQuestion(Question("What is share", "A)", "B)", "C) correct"))
+                                    prepopulateDatabase(it, context)
                                 }
                             }
                         }
@@ -86,7 +75,23 @@ abstract class AppDatabase : RoomDatabase(){
                 instance
             }
         }
+
+        private suspend fun prepopulateDatabase(database: AppDatabase, context: Context) {
+            val gson = Gson()
+            val jsonFile = context.assets.open("initial_data.json")
+            val reader = InputStreamReader(jsonFile)
+            val initialDataType = object : TypeToken<InitialData>() {}.type
+            val initialData: InitialData = gson.fromJson(reader, initialDataType)
+
+            initialData.users.forEach{database.usersDao().insertUser(it)}
+            initialData.shares.forEach{database.sharesDao().insertShare(it)}
+            initialData.activities.forEach{database.activityDao().insertActivity(it)}
+            initialData.questions.forEach{database.questionDao().insertQuestion(it)}
+        }
+
     }
+
+
 }
 
 //val MIGRATION_1_2 = object : Migration(1, 2) {
@@ -95,6 +100,7 @@ abstract class AppDatabase : RoomDatabase(){
 //        database.execSQL("ALTER TABLE user ADD COLUMN dateOfBirth LONG")
 //    }
 //}
+
 
 class Converters {
     @TypeConverter

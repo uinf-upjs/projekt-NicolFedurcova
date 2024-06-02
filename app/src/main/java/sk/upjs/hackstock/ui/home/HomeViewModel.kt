@@ -20,7 +20,7 @@ class HomeViewModel(private val appRepository: AppRepository, private val contex
     //val text: String = userId.toString()
     val text: String = "My Shares " //+ userId
 
-    val shares: LiveData<List<Share>> = appRepository.sharesOfUser(userId).asLiveData()
+    val shares: LiveData<List<Share>> = appRepository.visibleSharesOfUser(userId).asLiveData()
 
 
 

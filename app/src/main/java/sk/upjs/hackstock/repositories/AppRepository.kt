@@ -1,5 +1,7 @@
 package sk.upjs.hackstock.repositories
 
+import android.util.Log
+import androidx.room.Transaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
@@ -12,6 +14,7 @@ import sk.upjs.hackstock.entities.Activity
 import sk.upjs.hackstock.entities.Question
 import sk.upjs.hackstock.entities.Share
 import sk.upjs.hackstock.entities.User
+import java.util.Date
 
 class AppRepository(
     private val userDao: UserDao,
@@ -23,6 +26,8 @@ class AppRepository(
     val allQuestions: Flow<List<Question>> = questionDao.getAllQuestions()
     val allActivity: Flow<List<Activity>> = activityDao.getAllActivities()
     fun sharesOfUser(userId:Long): Flow<List<Share>> = shareDao.getAllSharesOfUser(userId)
+
+    fun visibleSharesOfUser(userId:Long): Flow<List<Share>> = shareDao.getVisibleSharesOfUser(userId)
     fun activitiesOfUser(userId: Long): Flow<List<Activity>> = activityDao.getAllActivityOfUser(userId)
 
     suspend fun getUserByEmailAndPassword(email:String, password:String): User?{
@@ -31,6 +36,22 @@ class AppRepository(
 
     suspend fun registerUser(user: User) {
         userDao.insertUser(user)
+    }
+
+    suspend fun insertUsers(users: List<User>) {
+        users.forEach { userDao.insertUser(it) }
+    }
+
+    suspend fun insertShares(shares: List<Share>) {
+        shares.forEach { shareDao.insertShare(it) }
+    }
+
+    suspend fun insertActivities(activities: List<Activity>) {
+        activities.forEach { activityDao.insertActivity(it) }
+    }
+
+    suspend fun insertQuestions(questions: List<Question>) {
+        questions.forEach { questionDao.insertQuestion(it) }
     }
 
     suspend fun deleteShare(share: Share){
@@ -54,5 +75,25 @@ class AppRepository(
             MainApplication.prefs.edit().clear().apply()
         }
     }
+
+    @Transaction
+    suspend fun sellShare(userName: String, priceOfShare: Double, share: Share) {
+        val userMoney = userDao.getUserByEmail(userName)?.money ?: 0.0
+        val user = userDao.getUserByEmail(userName)
+        if (user != null) {
+            userDao.updateUserMoney(user.userId, userMoney+priceOfShare)
+        }
+        Log.e("SETNULLSHAREUSER", "share ID: ${share.shareId}")
+
+        shareDao.setInvisible(share.shareId)
+        //shareDao.deleteShare(share)
+        if (user != null) {
+            activityDao.insertActivity(Activity(user.userId, share.shareId,
+                Date(), true, priceOfShare))
+        }
+        Log.e("SUCCESSELL", "Successfully sold share")
+    }
+
+
 
 }

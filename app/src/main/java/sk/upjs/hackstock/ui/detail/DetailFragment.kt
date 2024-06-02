@@ -15,8 +15,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import sk.upjs.hackstock.MainApplication
+import sk.upjs.hackstock.R
 import sk.upjs.hackstock.databinding.FragmentDetailBinding
 import sk.upjs.hackstock.entities.Share
+import androidx.navigation.fragment.findNavController
 
 class DetailFragment: Fragment() {
     private var _binding: FragmentDetailBinding? = null
@@ -79,23 +81,23 @@ class DetailFragment: Fragment() {
             }
         }
 
-//        val btnSell: Button = binding.btnSell
-//        btnSell.setOnClickListener {
-//            CoroutineScope(Dispatchers.Main).launch {
-//
-//                val userMoney =
-//                    userName?.let { it1 -> appRepository.getUsersMoney(it1) } // Get user's money from the database
-//                val stockPrice = detailViewModel.stockPriceOfCurrentShare // Get the current stock price
-//
-//                val remainingMoney = userMoney?.plus(stockPrice.value!!)
-//                if (userName != null && remainingMoney!=null) {
-//                    appRepository.updateUsersMoney(userName, remainingMoney)
-//                } // Update user's money in the database
-//                appRepository.deleteShare(share) // Remove the stock from the database
-//
-//
-//            }
-//        }
+        val btnSell: Button = binding.btnSell
+        btnSell.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                try{
+                    val stockPrice = detailViewModel.stockPriceOfCurrentShare // Get the current stock price
+                    if (userName != null) {
+                        appRepository.sellShare(userName,stockPrice.value?:0.0, share)
+                        findNavController().navigate(R.id.navigation_home)
+                    } else{
+                        Log.e("USERNULL", "User is null while updating acc money")
+                    }
+                }catch (e: Exception) {
+                    Log.e("SELLBUTTON", "Error updating user money and deleting share", e)
+                }
+
+            }
+        }
 
 
 

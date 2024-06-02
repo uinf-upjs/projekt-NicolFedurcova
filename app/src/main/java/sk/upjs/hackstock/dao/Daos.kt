@@ -63,6 +63,12 @@ interface ShareDao {
 
     @Query("DELETE FROM share")
     suspend fun deleteAllShares()
+
+    @Query("SELECT * FROM share WHERE userId = :userId AND visibility = 1")
+    fun getVisibleSharesOfUser(userId: Long): Flow<List<Share>>
+
+    @Query("UPDATE share SET visibility = 0 WHERE (shareId= :shareId )") //0 je ekvivalent NULL
+    suspend fun setInvisible(shareId:Long)
 }
 
 @Dao

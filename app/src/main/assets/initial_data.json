@@ -1,0 +1,47 @@
+{
+  "users": [
+    {
+      "name": "Jozko",
+      "surname": "Mrkvicka",
+      "email": "jm",
+      "password": "hslo",
+      "dateOfBirth": "1990-01-01T00:00:00.000Z",
+      "country": "USA",
+      "city": "NYC",
+      "status": "married",
+      "occupation": "doctor",
+      "annualIncome": 200000.00,
+      "money": 100.00,
+      "score": 100
+    },
+    {
+      "name": "Petko",
+      "surname": "Mrkvicka",
+      "email": "petko.mrkvicka@example.com",
+      "password": "hslo",
+      "dateOfBirth": "1992-01-01T00:00:00.000Z",
+      "country": "USA",
+      "city": "NYC",
+      "status": "married",
+      "occupation": "doctor",
+      "annualIncome": 200000.00,
+      "money": 100.00,
+      "score": 100
+    }
+  ],
+  "shares": [
+    {"userId": 1, "company": "Google", "shortname": "GOOG", "price": -150.00, "amount": 10.0, "visibility": 1},
+    {"userId": 1, "company": "Amazon", "shortname": "AMZN", "price": -300.00, "amount": 5.0, "visibility": 1},
+    {"userId": 1, "company": "Facebook", "shortname": "META", "price": -250.00, "amount": 20.0, "visibility": 1},
+    {"userId": 2, "company": "Apple", "shortname": "AAPL", "price": -120.00, "amount": 15.0, "visibility": 1}
+  ],
+  "activities": [
+    {"userId": 1, "shareId": 1, "date": "2022-01-01T00:00:00.000Z", "sell": false, "profit": -150.0},
+    {"userId": 1, "shareId": 2, "date": "2022-02-01T00:00:00.000Z", "sell": false, "profit": -300.0},
+    {"userId": 2, "shareId": 3, "date": "2022-03-01T00:00:00.000Z", "sell": false, "profit": -250.0},
+    {"userId": 2, "shareId": 4, "date": "2022-04-01T00:00:00.000Z", "sell": false, "profit": -120.0}
+  ],
+  "questions": [
+    {"text": "What is a share?", "option1": "A share is a portion of a company's assets.", "option2": "A share is a type of bond.", "correctOption": "A share is a portion of a company."}
+  ]
+}

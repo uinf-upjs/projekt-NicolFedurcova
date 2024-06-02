@@ -33,7 +33,7 @@
     <com.db.williamchart.view.LineChartView
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="275dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         app:chart_axis="none"
@@ -59,14 +59,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lineChart" />
 
-<!--    <Button-->
-<!--        android:id="@+id/btnSell"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Sell"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/text_info"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        android:layout_marginTop="16dp"/>-->
+    <Button
+        android:id="@+id/btnSell"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sell"
+        app:layout_constraintTop_toBottomOf="@+id/text_info"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

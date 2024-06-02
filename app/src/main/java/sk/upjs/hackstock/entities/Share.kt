@@ -15,7 +15,7 @@ import java.io.Serializable
         entity = User::class,
         parentColumns = ["userId"],
         childColumns = ["userId"],
-        //onDelete = ForeignKey.NO_ACTION //TOTO MOZNOESTE ASI ZMENIT
+        onDelete = ForeignKey.NO_ACTION //TOTO MOZNOESTE ASI ZMENIT
     )
 ])
 data class Share (
@@ -23,7 +23,8 @@ data class Share (
     val company: String,
     val shortname: String,
     val price: Double,
-    val amount: Double): Serializable, Parcelable {
+    val amount: Double,
+    val visibility: Byte): Serializable, Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     var shareId: Long = 0
@@ -36,7 +37,8 @@ data class Share (
         parcel.readString() ?: "",
         parcel.readString() ?: "",
         parcel.readDouble(),
-        parcel.readDouble()
+        parcel.readDouble(),
+        parcel.readByte()
 
     )
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -45,6 +47,7 @@ data class Share (
         parcel.writeString(shortname)
         parcel.writeDouble(price)
         parcel.writeDouble(amount)
+        parcel.writeByte(visibility)
     }
 
     override fun describeContents(): Int {

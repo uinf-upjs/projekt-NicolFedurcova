@@ -17,7 +17,7 @@ import java.util.Date
         entity = Share::class,
         parentColumns = ["shareId"],
         childColumns = ["shareId"],
-        //onDelete = ForeignKey.NO_ACTION
+        onDelete = ForeignKey.NO_ACTION
     )
 ])
 data class Activity (
@@ -25,7 +25,7 @@ data class Activity (
     val shareId: Long,
     val date: Date,
     val sell: Boolean,
-    val profit: Boolean
+    val profit: Double
     ): Serializable {
     @PrimaryKey(autoGenerate = true)
     var activityId: Long = 0
