@@ -1,6 +1,7 @@
 package sk.upjs.hackstock.repositories
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.room.Transaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -32,6 +33,10 @@ class AppRepository(
     fun visibleSharesOfUser(userId:Long): Flow<List<Share>> = shareDao.getVisibleSharesOfUser(userId)
     fun activitiesOfUser(userId: Long): Flow<List<Activity>> = activityDao.getAllActivityOfUser(userId)
 
+    fun getUserMoneyLiveData(userId: Long): LiveData<Double> {
+        return userDao.getUserMoneyLiveData(userId)
+    }
+
     suspend fun getUserByEmailAndPassword(email:String, password:String): User?{
         return userDao.getUserByEmailAndPassword(email, password)
     }
@@ -39,6 +44,7 @@ class AppRepository(
     suspend fun registerUser(user: User) {
         userDao.insertUser(user)
     }
+
 
     suspend fun insertUsers(users: List<User>) {
         users.forEach { userDao.insertUser(it) }
@@ -56,12 +62,36 @@ class AppRepository(
         questions.forEach { questionDao.insertQuestion(it) }
     }
 
+    suspend fun updateUser(user: User) {
+        userDao.updateUser(user)
+    }
+
+    suspend fun updateUserDetails(
+        userId: Long,
+        name: String,
+        surname: String,
+        dateOfBirth: Date,
+        country: String,
+        city: String,
+        status: String,
+        occupation: String,
+        annualIncome: Double
+    ) {
+        userDao.updateUserDetails(
+            userId, name, surname, dateOfBirth, country, city, status, occupation, annualIncome
+        )
+    }
+
     suspend fun deleteShare(share: Share){
         shareDao.deleteShare(share)
     }
 
     suspend fun getUsersMoney(userName: String): Double {
         return userDao.getUserByEmail(userName)?.money ?: 0.0
+    }
+
+    suspend fun getUserByEmail(userName: String): User? {
+        return userDao.getUserByEmail(userName)
     }
 
     suspend fun updateUsersMoney(userName: String, amount:Double) {

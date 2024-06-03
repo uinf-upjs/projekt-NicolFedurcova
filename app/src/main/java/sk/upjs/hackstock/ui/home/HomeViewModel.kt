@@ -14,15 +14,20 @@ import sk.upjs.hackstock.repositories.AppRepository
 
 class HomeViewModel(private val appRepository: AppRepository, private val context: Context) : ViewModel() {
 
-    val userId = context.applicationContext.getSharedPreferences(MainApplication.PREFS_NAME, Context.MODE_PRIVATE)
+    var userId= context.applicationContext.getSharedPreferences(MainApplication.PREFS_NAME, Context.MODE_PRIVATE)
         .getLong(MainApplication.USER_ID_KEY, 0)
+
+    var userMoney = appRepository.getUserMoneyLiveData(userId)
 
     //val text: String = userId.toString()
     val text: String = "My Shares " //+ userId
 
     val shares: LiveData<List<Share>> = appRepository.visibleSharesOfUser(userId).asLiveData()
 
-
+    fun setUserIds(userIds: Long) {
+        userId = userIds
+        userMoney = appRepository.getUserMoneyLiveData(userId)
+    }
 
     class HomeViewModelFactory(private val appRepository: AppRepository, private val context: Context) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

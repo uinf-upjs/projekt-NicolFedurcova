@@ -9,28 +9,37 @@
     <fragment
         android:id="@+id/loginFragment"
         android:name="sk.upjs.hackstock.ui.login.LoginFragment"
-        android:label="Login">
-        <action
-            android:id="@+id/action_loginFragment_to_fragment_home"
-            app:destination="@+id/navigation_home" />
-    </fragment>
+        android:label="@string/title_login"/>
+
+    <action
+        android:id="@+id/action_loginFragment_to_fragment_home"
+        app:destination="@+id/navigation_home" />
+
+    <fragment
+        android:id="@+id/profile_settings_fragment"
+        android:name="sk.upjs.hackstock.ui.settings.ProfileSettingsFragment"
+        android:label="@string/title_profile_settings"
+        tools:layout="@layout/fragment_profile_settings" />
+    <action
+        android:id="@+id/action_to_profileSettingsFragment"
+        app:destination="@id/profile_settings_fragment" />
 
     <fragment
         android:id="@+id/navigation_home"
         android:name="sk.upjs.hackstock.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
-        <action
-            android:id="@+id/action_home_to_detail"
-            app:destination="@id/detailFragment"
-            app:popUpTo="@id/navigation_home"
-            app:popUpToInclusive="true"/>
     </fragment>
+    <action
+        android:id="@+id/action_home_to_detail"
+        app:destination="@id/detailFragment"
+        app:popUpTo="@id/navigation_home"
+        app:popUpToInclusive="true"/>
 
     <fragment
         android:id="@+id/detailFragment"
         android:name="sk.upjs.hackstock.ui.detail.DetailFragment"
-        android:label="Detail Fragment"
+        android:label="@string/title_detail"
         tools:layout="@layout/fragment_detail"/>
 
     <fragment
@@ -38,12 +47,13 @@
         android:name="sk.upjs.hackstock.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search">
-        <action
-            android:id="@+id/action_search_to_detail"
-            app:destination="@id/detailFragment"
-            app:popUpTo="@id/navigation_search"
-            app:popUpToInclusive="true"/>
+
     </fragment>
+    <action
+        android:id="@+id/action_search_to_detail"
+        app:destination="@id/detailFragment"
+        app:popUpTo="@id/navigation_search"
+        app:popUpToInclusive="true"/>
 
     <fragment
         android:id="@+id/navigation_ai_tips"

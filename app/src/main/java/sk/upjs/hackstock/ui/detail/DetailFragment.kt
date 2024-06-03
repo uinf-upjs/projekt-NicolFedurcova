@@ -52,6 +52,7 @@ class DetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreate(savedInstanceState)
         // THIS ADDED TO COMMUNICATE WITH DB
         val application = requireNotNull(this.activity).application
         val appRepository = (application as MainApplication).repository

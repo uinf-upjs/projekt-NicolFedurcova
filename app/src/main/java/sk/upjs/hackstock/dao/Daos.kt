@@ -1,15 +1,18 @@
 package sk.upjs.hackstock.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import sk.upjs.hackstock.entities.User
 import kotlinx.coroutines.flow.Flow
 import sk.upjs.hackstock.entities.Activity
 import sk.upjs.hackstock.entities.Question
 import sk.upjs.hackstock.entities.Share
+import java.util.Date
 
 @Dao
 interface UserDao {
@@ -26,6 +29,32 @@ interface UserDao {
     @Query("SELECT * FROM user WHERE (email=:username)")
     suspend fun getUserByEmail(username: String): User?
 
+    @Update
+    suspend fun updateUser(user: User)
+
+    @Query("""
+        UPDATE user 
+        SET name = :name, 
+            surname = :surname, 
+            dateOfBirth = :dateOfBirth, 
+            country = :country, 
+            city = :city, 
+            status = :status, 
+            occupation = :occupation, 
+            annualIncome = :annualIncome
+        WHERE userId = :userId
+    """)
+    suspend fun updateUserDetails(
+        userId: Long,
+        name: String,
+        surname: String,
+        dateOfBirth: Date,
+        country: String,
+        city: String,
+        status: String,
+        occupation: String,
+        annualIncome: Double
+    )
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: User)
@@ -38,6 +67,9 @@ interface UserDao {
 
     @Query("DELETE FROM user WHERE (name=:name AND surname=:surname)")
     suspend fun deleteUserByNameSurnameBirthdate(name: String, surname: String)
+
+    @Query("SELECT money FROM user WHERE userId = :userId")
+    fun getUserMoneyLiveData(userId: Long): LiveData<Double>
 
     @Query("DELETE FROM user")
     suspend fun deleteAllUsers()

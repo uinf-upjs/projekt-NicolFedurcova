@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <!-- ZATIAL JE TU LEN IKONKA LOGOUT POTOM SA MOZE PRIDAT ZE NASTAVENIE PROFILU A INE SRANDY-->
+
+    <item
+        android:id="@+id/action_money"
+        android:title="A"
+        app:actionLayout="@layout/menu_custom_layout"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_logout"
         android:title="Logout"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_logout_black_24dp" />
+        android:icon="@drawable/ic_logout_black_24dp"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:title="Profile Settings"
+        android:icon="@drawable/ic_settings_black_24dp"
+        app:showAsAction="never" />
 </menu>

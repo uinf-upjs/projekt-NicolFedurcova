@@ -48,13 +48,18 @@ class ShareAdapter(private var shares: List<Share>, private val listener: OnItem
         fun bind(currentShare: Share) {
 
             textViewShareName.text = currentShare.company
-            textViewSharePrice.text = "Profit " + currentShare.price.toString()
+            textViewSharePrice.text = "Profit " + formatNumberToThreeDecimalPlaces(currentShare.price)
+
 
             when {
                 currentShare.price > 0 -> textViewSharePrice.setTextColor(itemView.context.getColor(R.color.price_increase))
                 currentShare.price < 0 -> textViewSharePrice.setTextColor(itemView.context.getColor(R.color.price_decrease))
             }
         }
+    }
+
+    fun formatNumberToThreeDecimalPlaces(number: Double): String {
+        return String.format("%.2f", number)
     }
 
     fun updateResults(newResults: List<Share>) {

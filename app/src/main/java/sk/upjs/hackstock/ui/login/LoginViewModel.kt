@@ -19,6 +19,7 @@ class LoginViewModel(private val appRepository: AppRepository) : ViewModel() {
     private val _warningMessage = MutableLiveData<String>()
     val warningMessage: LiveData<String> = _warningMessage
 
+
     fun login(username: String, password: String) {
         viewModelScope.launch {
             val user = appRepository.getUserByEmailAndPassword(username, password)
@@ -67,6 +68,7 @@ class LoginViewModel(private val appRepository: AppRepository) : ViewModel() {
             // Clear user session data
             appRepository.clearUserSession()
             MainApplication.prefs.edit().remove("user_email").apply()
+            MainApplication.prefs.edit().remove("user_id").apply()
 
         }
     }

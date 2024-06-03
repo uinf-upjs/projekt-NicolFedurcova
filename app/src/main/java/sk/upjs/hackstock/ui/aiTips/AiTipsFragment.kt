@@ -1,5 +1,6 @@
 package sk.upjs.hackstock.ui.aiTips
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,18 +19,22 @@ class AiTipsFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var aiTipsViewModel: AiTipsViewModel
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         //THIS ADDED TO COMMUNICATE WITH DB
         val application = requireNotNull(this.activity).application
         val usersRepository = (application as MainApplication).repository
         val factory = AiTipsViewModel.AiTipsViewModelFactory(usersRepository)
         //TO HERE
-        val aiTipsViewModel =
+        aiTipsViewModel =
             ViewModelProvider(this, factory).get(AiTipsViewModel::class.java)
 
         _binding = FragmentAiTipsBinding.inflate(inflater, container, false)

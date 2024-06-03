@@ -31,6 +31,7 @@ class LoginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        super.onCreate(savedInstanceState)
         val application = requireNotNull(this.activity).application
         val appRepository = (application as MainApplication).repository
         val factory = LoginViewModel.LoginViewModelFactory(appRepository)
