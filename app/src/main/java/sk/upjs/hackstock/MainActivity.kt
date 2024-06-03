@@ -86,8 +86,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            if (destination.id == R.id.profile_settings_fragment) {
+                navView.visibility = View.GONE
+            } else {
+                navView.visibility = View.VISIBLE
+            }
             invalidateOptionsMenu()
             checkUserStatus()
+
         }
 
 
@@ -186,6 +192,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.action_settings -> {
                 findNavController(R.id.nav_host_fragment_activity_main).navigate(R.id.action_to_profileSettingsFragment)
+                binding.navView.visibility = View.INVISIBLE
                 true
             }
             else -> super.onOptionsItemSelected(item)
